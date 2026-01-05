@@ -1,145 +1,13 @@
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>La Quête 2026 – Mode Confort</title>
-  <style>
-    body {
-      font-family: system-ui, sans-serif;
-      background: linear-gradient(135deg, #1f2933, #111827);
-      color: #f9fafb;
-      padding: 24px;
-    }
-    h1 { text-align: center; font-size: 2rem; margin-bottom: 16px; }
-    h2 { margin-top: 24px; font-size: 1.4rem; }
-    .section { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
-    .task { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
-    .task input { width: 20px; height: 20px; accent-color: #60a5fa; }
-    .reward { font-style: italic; opacity: 0.8; margin-top: 8px; }
-    button { margin-top: 16px; padding: 8px 12px; border-radius: 999px; border: none; background: #60a5fa; color: #0f172a; cursor: pointer; }
-    button:hover { background: #93c5fd; }
-    footer { text-align: center; margin-top: 32px; opacity: 0.6; font-size: 0.9rem; }
-  </style>
-</head>
-<body>
-  <h1>🎮 La Quête 2026</h1>
-  <!-- Barre de progression globale -->
-<div id="progress-container" style="background: rgba(255,255,255,0.1); border-radius: 12px; margin: 16px 0; height: 24px;">
-  <div id="progress-bar" style="width: 0%; height: 100%; background: #60a5fa; border-radius: 12px;"></div>
-</div>
-<p id="progress-text" style="text-align:center; margin-bottom: 24px; font-weight: bold; color: #f9fafb;">0% accompli</p>
-    <script>
-
-<!-- Exemple de section -->
-<div class="section">
-  <h2>🌱 Prendre soin de soi</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Dire non à quelque chose qui me pèse</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment solo</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Méditer 5 min</div>
-  <div class="reward">🎁 Bien-être assuré</div>
-</div>
-
-<div class="section">
-  <h2>🎬 Films et séries</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode préféré</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Noter une émotion ressentie</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une mini review</div>
-  <div class="reward">🎁 Cœur léger</div>
-</div>
-
-<!-- (ajoute le reste de tes sections ici de la même façon, avec la classe "task-checkbox") -->
-
-
-
-  <div class="section">
-    <h2>🌱 Me choisir</h2>
-    <div class="task"><input type="checkbox" class="task-checkbox"> Dire non à un truc relou</div>
-    <div class="task"><input type="checkbox"> Prendre un moment solo</div>
-    <div class="reward">🎁 un bonon </div>
-  </div>
-  <div class="section">
-    <h2>🎬 Réconfort</h2>
-    <div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode comfort</div>
-    <div class="task"><input type="checkbox" class="task-checkbox"> Noter une émotion ressentie</div>
-    <div class="reward">🎁 Cœur léger</div>
-  </div>
-  <div class="section">
-    <h2>✍️ Création</h2>
-    <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une mini review</div>
-    <div class="task"><input type="checkbox" class="task-checkbox"> Créer sans finir</div>
-    <div class="reward">🎁 Dopamine créative</div>
-  </div>
-  <!-- 1️⃣ Prendre soin de soi -->
-<div class="section">
-  <h2>🌱 Prendre soin de soi</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Dire non à quelque chose qui me pèse</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment solo</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Méditer 5 min</div>
-  <div class="reward">🎁 Bien-être assuré</div>
-</div>
-
-<!-- 2️⃣ Films et séries -->
-<div class="section">
-  <h2>🎬 Films et séries</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode préféré</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Noter une émotion ressentie</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une mini review</div>
-  <div class="reward">🎁 Cœur léger</div>
-</div>
-
-<!-- 3️⃣ Création & écriture -->
-<div class="section">
-  <h2>✍️ Création & écriture</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une idée pour une histoire</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Créer un petit dessin / croquis</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Travailler sur le livre audio</div>
-  <div class="reward">🎁 Dopamine créative</div>
-</div>
-
-<!-- 4️⃣ Jeux et divertissement -->
-<div class="section">
-  <h2>🎮 Jeux et divertissement</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Jouer 30 min à un jeu préféré</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Essayer un nouveau challenge</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Cocher une victoire dans un mini-game</div>
-  <div class="reward">🎁 Fun garanti</div>
-</div>
-
-<!-- 6️⃣ Social et liens -->
-<div class="section">
-  <h2>🤝 Social et liens</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Envoyer un message sympa à un ami</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Partager un moment fun avec Mael</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Montrer un objet spécial / collection</div>
-  <div class="reward">🎁 Sourires partagés</div>
-</div>
-
-<!-- 7️⃣ Développement personnel -->
-<div class="section">
-  <h2>🧠 Développement personnel</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Essayer une nouvelle activité / hobby</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Lire un chapitre ou un article inspirant</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Tester une nouvelle compétence</div>
-  <div class="reward">🎁 Fierté intérieure</div>
-</div>
-
-<!-- 10️⃣ Misc / bonus -->
-<div class="section">
-  <h2>✨ Bonus & réconfort</h2>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Moment réconfort : regarder une scène ou épisode préféré</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Jouer avec un objet ou souvenir spécial</div>
-  <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment juste pour soi</div>
-  <div class="reward">🎁 Sérénité maximale</div>
-</div>
 <script>
 document.addEventListener("DOMContentLoaded", function() {
+  // Sélectionne toutes les cases
   const checkboxes = document.querySelectorAll('.task-checkbox');
   const progressBar = document.getElementById('progress-bar');
   const progressText = document.getElementById('progress-text');
 
+  // Met à jour la barre de progression
   function updateProgress() {
-    if (checkboxes.length === 0) return; // sécurité
+    if (checkboxes.length === 0) return;
     let checked = 0;
     checkboxes.forEach(cb => { if(cb.checked) checked++; });
     const percent = Math.round((checked / checkboxes.length) * 100);
@@ -147,20 +15,23 @@ document.addEventListener("DOMContentLoaded", function() {
     progressText.textContent = percent + '% accompli';
   }
 
+  // Sauvegarde automatique
   function saveProgress() {
     checkboxes.forEach((cb, index) => {
       localStorage.setItem('checkbox-' + index, cb.checked);
     });
   }
 
+  // Charge la sauvegarde
   function loadProgress() {
     checkboxes.forEach((cb, index) => {
       const saved = localStorage.getItem('checkbox-' + index);
-      if (saved === 'true') cb.checked = true;
+      cb.checked = saved === 'true';
     });
     updateProgress();
   }
 
+  // Écoute les changements
   checkboxes.forEach(cb => {
     cb.addEventListener('change', () => {
       updateProgress();
@@ -168,44 +39,7 @@ document.addEventListener("DOMContentLoaded", function() {
     });
   });
 
-  // Charger la sauvegarde
+  // Initialisation
   loadProgress();
 });
 </script>
-
-   <button onclick="alert('Sauvegarde 💾')">💾 Sauvegarder</button>
-  <footer>Tu peux revenir ici juste pour cocher une case 💛</footer>
-  <!-- Script pour la barre de progression -->
-<script>
-const checkboxes = document.querySelectorAll('.task-checkbox');
-const progressBar = document.getElementById('progress-bar');
-const progressText = document.getElementById('progress-text');
-
-function updateProgress() {
-  const total = checkboxes.length;
-  const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-  const percent = Math.round((checked / total) * 100);
-  progressBar.style.width = percent + '%';
-  progressText.textContent = percent + '% accompli';
-}
-
-checkboxes.forEach(cb => {
-  cb.addEventListener('change', updateProgress);
-});
-
-// Initialisation au chargement
-updateProgress();
-</script>
-
-</body>
-</html>
-
-
-
-
-
-
-
-
-
-
