@@ -30,49 +30,6 @@
 </div>
 <p id="progress-text" style="text-align:center; margin-bottom: 24px; font-weight: bold; color: #f9fafb;">0% accompli</p>
     <script>
-// Sélectionne toutes les cases
-const checkboxes = document.querySelectorAll('.task-checkbox');
-
-// Fonction pour mettre à jour la barre de progression
-const progressBar = document.getElementById('progress-bar');
-const progressText = document.getElementById('progress-text');
-
-function updateProgress() {
-  const total = checkboxes.length;
-  const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
-  const percent = Math.round((checked / total) * 100);
-  progressBar.style.width = percent + '%';
-  progressText.textContent = percent + '% accompli';
-}
-
-// Fonction pour sauvegarder l'état
-function saveProgress() {
-  checkboxes.forEach((cb, index) => {
-    localStorage.setItem('checkbox-' + index, cb.checked);
-  });
-}
-
-// Fonction pour charger l'état sauvegardé
-function loadProgress() {
-  checkboxes.forEach((cb, index) => {
-    const saved = localStorage.getItem('checkbox-' + index);
-    if (saved === 'true') cb.checked = true;
-  });
-  updateProgress();
-}
-
-// Écoute des changements sur toutes les cases
-checkboxes.forEach(cb => {
-  cb.addEventListener('change', () => {
-    updateProgress();
-    saveProgress();
-  });
-});
-
-// Charger les cases sauvegardées au démarrage
-loadProgress();
-</script>
-
 
 <!-- Exemple de section -->
 <div class="section">
@@ -175,8 +132,48 @@ loadProgress();
   <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment juste pour soi</div>
   <div class="reward">🎁 Sérénité maximale</div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  const checkboxes = document.querySelectorAll('.task-checkbox');
+  const progressBar = document.getElementById('progress-bar');
+  const progressText = document.getElementById('progress-text');
 
-   <button onclick="alert('Sauvegarde imaginaire 💾')">💾 Sauvegarder</button>
+  function updateProgress() {
+    if (checkboxes.length === 0) return; // sécurité
+    let checked = 0;
+    checkboxes.forEach(cb => { if(cb.checked) checked++; });
+    const percent = Math.round((checked / checkboxes.length) * 100);
+    progressBar.style.width = percent + '%';
+    progressText.textContent = percent + '% accompli';
+  }
+
+  function saveProgress() {
+    checkboxes.forEach((cb, index) => {
+      localStorage.setItem('checkbox-' + index, cb.checked);
+    });
+  }
+
+  function loadProgress() {
+    checkboxes.forEach((cb, index) => {
+      const saved = localStorage.getItem('checkbox-' + index);
+      if (saved === 'true') cb.checked = true;
+    });
+    updateProgress();
+  }
+
+  checkboxes.forEach(cb => {
+    cb.addEventListener('change', () => {
+      updateProgress();
+      saveProgress();
+    });
+  });
+
+  // Charger la sauvegarde
+  loadProgress();
+});
+</script>
+
+   <button onclick="alert('Sauvegarde 💾')">💾 Sauvegarder</button>
   <footer>Tu peux revenir ici juste pour cocher une case 💛</footer>
   <!-- Script pour la barre de progression -->
 <script>
@@ -202,6 +199,7 @@ updateProgress();
 
 </body>
 </html>
+
 
 
 
