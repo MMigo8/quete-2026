@@ -1,367 +1,196 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>La Quête 2026</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
-
-<style>
-/* ================= VARIABLES ================= */
-body {
-  --bg: #111827;
-  --card: rgba(255,255,255,0.06);
-  --text: #f9fafb;
-  --accent: #60a5fa;
-}
-
-/* ===== THE OFFICE THEME ===== */
-body.theme-office {
-  --bg: #f4f1ec;
-  --card: #ffffff;
-  --text: #1f2933;
-  --accent: #2563eb;
-}
-
-/* ================= GLOBAL ================= */
-body {
-  font-family: system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 24px;
-  max-width: 900px;
-  margin: auto;
-}
-
-h1 {
-  text-align: center;
-  font-size: 2.2rem;
-  margin-bottom: 6px;
-}
-
-#current-month {
-  text-align: center;
-  opacity: 0.8;
-  margin-bottom: 12px;
-}
-
-/* ================= THEME SELECT ================= */
-#theme-select {
-  display: block;
-  margin: 0 auto 20px;
-  padding: 6px 12px;
-  border-radius: 8px;
-  border: none;
-  background: var(--card);
-  color: var(--text);
-}
-
-/* ================= PROGRESS ================= */
-#progress-container {
-  background: rgba(255,255,255,0.15);
-  border-radius: 12px;
-  height: 24px;
-  margin: 20px 0;
-  overflow: hidden;
-}
-
-#progress-bar {
-  height: 100%;
-  width: 0%;
-  background: var(--accent);
-  transition: width 0.3s ease;
-}
-
-#progress-text {
-  text-align: center;
-  font-weight: bold;
-  margin-bottom: 24px;
-}
-
-/* ================= DAILY CHALLENGE ================= */
-#daily-challenge-btn {
-  display: inline-block;
-  padding: 8px 16px;
-  border-radius: 12px;
-  border: none;
-  background: var(--accent);
-  color: var(--bg);
-  cursor: pointer;
-}
-
-#daily-challenge-text {
-  margin-top: 10px;
-  font-weight: bold;
-  text-align: center;
-}
-
-/* ================= SECTIONS ================= */
-.section {
-  background: var(--card);
-  border-radius: 16px;
-  padding: 16px;
-  margin-bottom: 20px;
-}
-
-.task {
-  display: flex;
-  gap: 10px;
-  margin: 8px 0;
-}
-
-.task input {
-  width: 20px;
-  height: 20px;
-  accent-color: var(--accent);
-}
-
-.reward {
-  margin-top: 10px;
-  opacity: 0.7;
-  font-style: italic;
-}
-
-/* ================= SECTION FINIE ================= */
-#section-finished {
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: rgba(0,0,0,0.85);
-  color: white;
-  padding: 20px 30px;
-  border-radius: 20px;
-  font-size: 1.6rem;
-  display: none;
-  z-index: 9999;
-}
-
-footer {
-  text-align: center;
-  opacity: 0.6;
-  margin-top: 40px;
-}
-</style>
-</head>
-
-<body>
-
-<h1>🎮 La Quête 2026</h1>
-<p id="current-month"></p>
-
-<select id="theme-select">
-  <option value="default">🌈 Default</option>
-  <option value="office">🎬 The Office</option>
-</select>
-
-<div style="text-align:center; margin-bottom:20px;">
-  <button id="daily-challenge-btn">🎲 Surprise du jour</button>
-  <p id="daily-challenge-text"></p>
-</div>
-
-<div id="progress-container">
-  <div id="progress-bar"></div>
-</div>
-<p id="progress-text">0% accompli</p>
-
-<!-- ===== SECTIONS ===== -->
-<div class="section">
-<h2>🌱 Prendre soin de soi</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Dire non à quelque chose qui me pèse</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment solo</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Méditer 5 minutes</div>
-<div class="reward">🎁 Bien-être assuré</div>
-</div>
-
-<div class="section">
-<h2>🎬 Films & séries</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode préféré</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Noter une émotion ressentie</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Écrire une mini review</div>
-<div class="reward">🎁 Cœur léger</div>
-</div>
-
-<div class="section">
-<h2>✍️ Création</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Écrire une idée</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Créer sans finir</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Avancer sur un projet</div>
-<div class="reward">🎁 Dopamine créative</div>
-</div>
-
-<div class="section">
-<h2>🎮 Jeux</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Jouer 30 minutes</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Tester un nouveau défi</div>
-<div class="reward">🎁 Fun garanti</div>
-</div>
-
-<div class="section">
-<h2>🤝 Social</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Envoyer un message sympa</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Partager un moment avec Mael</div>
-<div class="reward">🎁 Sourires partagés</div>
-</div>
-
-<div class="section">
-<h2>✨ Bonus</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Moment réconfort</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Prendre du temps pour soi</div>
-<div class="reward">🎁 Sérénité maximale</div>
-</div>
-
-<div id="section-finished">🎉 Section finie !</div>
-
-<footer>Reviens cocher une case quand tu veux 💛</footer>
-
-<audio id="ding" src="https://www.myinstants.com/media/sounds/ding-sound-effect.mp3"></audio>
-<audio id="section-sound" src="https://www.myinstants.com/media/sounds/wow-anime-meme-55752.mp3"></audio>
-
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-
-  /* ===== MOIS ===== */
-  const monthDisplay = document.getElementById("current-month");
-  const now = new Date();
-  const monthName = now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
-  monthDisplay.textContent = "🗓️ " + monthName.charAt(0).toUpperCase() + monthName.slice(1);
-
-  /* ===== THEME ===== */
-  const themeSelect = document.getElementById("theme-select");
-  const savedTheme = localStorage.getItem("theme") || "default";
-  document.body.classList.toggle("theme-office", savedTheme === "office");
-  themeSelect.value = savedTheme;
-
-  themeSelect.addEventListener("change", () => {
-    document.body.classList.toggle("theme-office", themeSelect.value === "office");
-    localStorage.setItem("theme", themeSelect.value);
-  });
-
-  /* ===== PROGRESSION / CHECKBOXES ===== */
-  const checkboxes = document.querySelectorAll(".task-checkbox");
-  const progressBar = document.getElementById("progress-bar");
-  const progressText = document.getElementById("progress-text");
-  const ding = document.getElementById("ding");
-  const sectionSound = document.getElementById("section-sound");
-  const message = document.getElementById("section-finished");
-
-  function updateProgress() {
-    const checked = [...checkboxes].filter(c => c.checked).length;
-    const percent = Math.round((checked / checkboxes.length) * 100);
-    progressBar.style.width = percent + "%";
-    progressText.textContent = percent + "% accompli";
-  }
-
-  function save() {
-    checkboxes.forEach((cb, i) => localStorage.setItem("quest-" + i, cb.checked));
-  }
-
-  function load() {
-    checkboxes.forEach((cb, i) => cb.checked = localStorage.getItem("quest-" + i) === "true");
-    updateProgress();
-  }
-
-  checkboxes.forEach(cb => {
-    cb.addEventListener("change", () => {
-      ding.currentTime = 0; ding.play();
-      confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
-      updateProgress(); save();
-
-      const section = cb.closest(".section");
-      const all = section.querySelectorAll(".task-checkbox");
-      if ([...all].every(c => c.checked)) {
-        sectionSound.play();
-        confetti({ particleCount: 400, spread: 180 });
-        message.style.display = "block";
-        setTimeout(() => message.style.display = "none", 2000);
-      }
-    });
-  });
-
-  load();
-
-  /* ===== DAILY CHALLENGE ===== */
-  const challenges = [
-    "Écris une mini scène de ton livre audio",
-    "Regarde un épisode comfort",
-    "Fais un challenge dans Minecraft ou Stardew",
-    "Envoie un message fun à Mael",
-    "Note une émotion ressentie sur ton épisode préféré",
-    "Fais un petit dessin chibi d’un personnage Pixar",
-    "Fais une danse de victoire de 30s 🕺"
-  ];
-
-  const challengeBtn = document.getElementById("daily-challenge-btn");
-  const challengeText = document.getElementById("daily-challenge-text");
-
-  const monthKey = `daily-challenges-${now.getMonth()}-${now.getFullYear()}`;
-  let dailyChallenges = JSON.parse(localStorage.getItem(monthKey));
-  if (!dailyChallenges) {
-    dailyChallenges = [];
-    const copy = [...challenges];
-    for (let i = 0; i < 31; i++) {
-      if (copy.length === 0) copy.push(...challenges);
-      const randIndex = Math.floor(Math.random() * copy.length);
-      dailyChallenges.push(copy.splice(randIndex,1)[0]);
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>La Quête 2026 – Mode Confort</title>
+  <style>
+    body {
+      font-family: system-ui, sans-serif;
+      background: linear-gradient(135deg, #1f2933, #111827);
+      color: #f9fafb;
+      padding: 24px;
     }
-    localStorage.setItem(monthKey, JSON.stringify(dailyChallenges));
-  }
+    h1 { text-align: center; font-size: 2rem; margin-bottom: 16px; }
+    h2 { margin-top: 24px; font-size: 1.4rem; }
+    .section { background: rgba(255,255,255,0.05); border-radius: 12px; padding: 16px; margin-bottom: 16px; }
+    .task { display: flex; align-items: center; gap: 8px; margin: 8px 0; }
+    .task input { width: 20px; height: 20px; accent-color: #60a5fa; }
+    .reward { font-style: italic; opacity: 0.8; margin-top: 8px; }
+    button { margin-top: 16px; padding: 8px 12px; border-radius: 999px; border: none; background: #60a5fa; color: #0f172a; cursor: pointer; }
+    button:hover { background: #93c5fd; }
+    footer { text-align: center; margin-top: 32px; opacity: 0.6; font-size: 0.9rem; }
 
-  challengeBtn.addEventListener("click", () => {
-    const day = now.getDate() - 1;
-    const challenge = dailyChallenges[day];
-    challengeText.textContent = "🎁 Défi du jour : " + challenge;
-    confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
-    ding.currentTime = 0; ding.play();
-  });
-<script>
-// Reset mensuel automatique
-document.addEventListener("DOMContentLoaded", function() {
-  const checkboxes = document.querySelectorAll('.task-checkbox');
-  const currentMonth = new Date().getMonth(); // 0 = janvier, 11 = décembre
-  const lastMonth = localStorage.getItem('lastMonth');
+    /* Bandeau nouveau mois */
+    #new-month-banner {
+      position: fixed;
+      top: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #60a5fa;
+      color: #0f172a;
+      padding: 12px 24px;
+      border-radius: 12px;
+      font-weight: bold;
+      display: none;
+      z-index: 9999;
+    }
+  </style>
+  <!-- Librairie confetti -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+</head>
+<body>
+  <h1>🎮 La Quête 2026</h1>
 
-  // Si le mois a changé
-  if (lastMonth === null || parseInt(lastMonth) !== currentMonth) {
-    // Animation douce pour décocher
-    checkboxes.forEach((cb, index) => {
-      setTimeout(() => {
-        cb.checked = false;
-        cb.parentElement.style.transition = "opacity 0.3s";
-        cb.parentElement.style.opacity = "0.3";
-        setTimeout(() => cb.parentElement.style.opacity = "1", 300);
-      }, index * 50); // effet cascade
-    });
+  <!-- Barre de progression globale -->
+  <div id="progress-container" style="background: rgba(255,255,255,0.1); border-radius: 12px; margin: 16px 0; height: 24px;">
+    <div id="progress-bar" style="width: 0%; height: 100%; background: #60a5fa; border-radius: 12px;"></div>
+  </div>
+  <p id="progress-text" style="text-align:center; margin-bottom: 24px; font-weight: bold; color: #f9fafb;">0% accompli</p>
 
-    // Mettre à jour le mois stocké
-    localStorage.setItem('lastMonth', currentMonth);
+  <!-- Bandeau Nouveau mois -->
+  <div id="new-month-banner">✨ Nouveau mois ! Toutes les cases ont été réinitialisées ✨</div>
 
-    // Reset la barre de progression
+  <!-- SECTIONs -->
+  <!-- 1️⃣ Prendre soin de soi -->
+  <div class="section">
+    <h2>🌱 Prendre soin de soi</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Dire non à quelque chose qui me pèse</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment solo</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Méditer 5 min</div>
+    <div class="reward">🎁 Bien-être assuré</div>
+  </div>
+
+  <!-- 2️⃣ Films et séries -->
+  <div class="section">
+    <h2>🎬 Films et séries</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode préféré</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Noter une émotion ressentie</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une mini review</div>
+    <div class="reward">🎁 Cœur léger</div>
+  </div>
+
+  <!-- 3️⃣ Création & écriture -->
+  <div class="section">
+    <h2>✍️ Création & écriture</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une idée pour une histoire</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Créer un petit dessin / croquis</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Travailler sur le livre audio</div>
+    <div class="reward">🎁 Dopamine créative</div>
+  </div>
+
+  <!-- 4️⃣ Jeux et divertissement -->
+  <div class="section">
+    <h2>🎮 Jeux et divertissement</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Jouer 30 min à un jeu préféré</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Essayer un nouveau challenge</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Cocher une victoire dans un mini-game</div>
+    <div class="reward">🎁 Fun garanti</div>
+  </div>
+
+  <!-- 6️⃣ Social et liens -->
+  <div class="section">
+    <h2>🤝 Social et liens</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Envoyer un message sympa à un ami</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Partager un moment fun avec Mael</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Montrer un objet spécial / collection</div>
+    <div class="reward">🎁 Sourires partagés</div>
+  </div>
+
+  <!-- 7️⃣ Développement personnel -->
+  <div class="section">
+    <h2>🧠 Développement personnel</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Essayer une nouvelle activité / hobby</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Lire un chapitre ou un article inspirant</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Tester une nouvelle compétence</div>
+    <div class="reward">🎁 Fierté intérieure</div>
+  </div>
+
+  <!-- 10️⃣ Misc / bonus -->
+  <div class="section">
+    <h2>✨ Bonus & réconfort</h2>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Moment réconfort : regarder une scène ou épisode préféré</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Jouer avec un objet ou souvenir spécial</div>
+    <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment juste pour soi</div>
+    <div class="reward">🎁 Sérénité maximale</div>
+  </div>
+
+  <button onclick="alert('Sauvegarde 💾')">💾 Sauvegarder</button>
+  <footer>Tu peux revenir ici juste pour cocher une case 💛</footer>
+
+  <!-- SCRIPT -->
+  <script>
+  document.addEventListener("DOMContentLoaded", function() {
+    const checkboxes = document.querySelectorAll('.task-checkbox');
     const progressBar = document.getElementById('progress-bar');
     const progressText = document.getElementById('progress-text');
-    if(progressBar && progressText){
-      progressBar.style.width = "0%";
-      progressText.textContent = "0% accompli";
+    const newMonthBanner = document.getElementById('new-month-banner');
+
+    // Fonction barre de progression
+    function updateProgress() {
+      const total = checkboxes.length;
+      const checked = Array.from(checkboxes).filter(cb => cb.checked).length;
+      const percent = Math.round((checked / total) * 100);
+      progressBar.style.width = percent + '%';
+      progressText.textContent = percent + '% accompli';
     }
 
-    // Petit message confetti “Nouveau mois !”
-    if (typeof confetti === "function") {
-      confetti({
-        particleCount: 100,
-        spread: 70,
-        origin: { y: 0.6 }
+    // Sauvegarde
+    function saveProgress() {
+      checkboxes.forEach((cb, index) => {
+        localStorage.setItem('checkbox-' + index, cb.checked);
       });
     }
-    alert("✨ Nouveau mois ! Toutes les cases ont été réinitialisées.");
-  }
-});
-</script>
 
-});
-</script>
+    // Chargement
+    function loadProgress() {
+      checkboxes.forEach((cb, index) => {
+        const saved = localStorage.getItem('checkbox-' + index);
+        if (saved === 'true') cb.checked = true;
+      });
+      updateProgress();
+    }
 
+    // Listener checkbox
+    checkboxes.forEach(cb => {
+      cb.addEventListener('change', () => {
+        updateProgress();
+        saveProgress();
+      });
+    });
+
+    // RESET MENSUEL ROBUSTE
+    const currentMonth = new Date().getMonth();
+    const lastMonth = localStorage.getItem('lastMonth');
+    if(lastMonth === null || parseInt(lastMonth) !== currentMonth){
+      checkboxes.forEach((cb, index) => {
+        setTimeout(() => { 
+          cb.checked = false; 
+          cb.parentElement.style.transition = "opacity 0.3s"; 
+          cb.parentElement.style.opacity = "0.3";
+          setTimeout(()=> cb.parentElement.style.opacity="1", 300);
+        }, index * 50);
+      });
+      localStorage.setItem('lastMonth', currentMonth);
+      // Reset barre
+      progressBar.style.width = "0%";
+      progressText.textContent = "0% accompli";
+
+      // Confetti gros pour reset
+      if(typeof confetti === "function"){
+        confetti({ particleCount: 200, spread: 90, origin: { y:0.6 } });
+      }
+
+      // Affiche bandeau
+      newMonthBanner.style.display = "block";
+      setTimeout(()=>{ newMonthBanner.style.display="none"; }, 4000);
+    }
+
+    // Charger la sauvegarde
+    loadProgress();
+    updateProgress();
+  });
+
+  </script>
 </body>
 </html>
-
-
