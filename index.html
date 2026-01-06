@@ -237,6 +237,35 @@ document.addEventListener("DOMContentLoaded", () => {
     document.body.classList.toggle("theme-office", themeSelect.value === "office");
     localStorage.setItem("theme", themeSelect.value);
   });
+// ==================== RESET MENSUEL AUTOMATIQUE ====================
+const currentMonth = new Date().getMonth(); // 0 = janvier
+const lastMonth = localStorage.getItem('lastMonth');
+
+// Si le mois a changé
+if (lastMonth === null || parseInt(lastMonth) !== currentMonth) {
+  // Animation douce pour décocher chaque case
+  checkboxes.forEach((cb, index) => {
+    setTimeout(() => {
+      cb.checked = false;
+      cb.parentElement.style.transition = "opacity 0.3s";
+      cb.parentElement.style.opacity = "0.3";
+      setTimeout(() => cb.parentElement.style.opacity = "1", 300);
+    }, index * 50); // effet cascade
+  });
+
+  // Mettre à jour le mois stocké
+  localStorage.setItem('lastMonth', currentMonth);
+
+  // Reset la barre de progression
+  progressBar.style.width = "0%";
+  progressText.textContent = "0% accompli";
+
+  // Confettis pour nouveau mois
+  confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
+
+  // Message d'alerte
+  alert("✨ Nouveau mois ! Toutes les cases ont été réinitialisées.");
+}
 
   /* ===== PROGRESSION / CHECKBOXES ===== */
   const checkboxes = document.querySelectorAll(".task-checkbox");
@@ -321,3 +350,4 @@ document.addEventListener("DOMContentLoaded", () => {
 
 </body>
 </html>
+
