@@ -315,9 +315,52 @@ document.addEventListener("DOMContentLoaded", () => {
     confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
     ding.currentTime = 0; ding.play();
   });
+<script>
+// Reset mensuel automatique
+document.addEventListener("DOMContentLoaded", function() {
+  const checkboxes = document.querySelectorAll('.task-checkbox');
+  const currentMonth = new Date().getMonth(); // 0 = janvier, 11 = décembre
+  const lastMonth = localStorage.getItem('lastMonth');
+
+  // Si le mois a changé
+  if (lastMonth === null || parseInt(lastMonth) !== currentMonth) {
+    // Animation douce pour décocher
+    checkboxes.forEach((cb, index) => {
+      setTimeout(() => {
+        cb.checked = false;
+        cb.parentElement.style.transition = "opacity 0.3s";
+        cb.parentElement.style.opacity = "0.3";
+        setTimeout(() => cb.parentElement.style.opacity = "1", 300);
+      }, index * 50); // effet cascade
+    });
+
+    // Mettre à jour le mois stocké
+    localStorage.setItem('lastMonth', currentMonth);
+
+    // Reset la barre de progression
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    if(progressBar && progressText){
+      progressBar.style.width = "0%";
+      progressText.textContent = "0% accompli";
+    }
+
+    // Petit message confetti “Nouveau mois !”
+    if (typeof confetti === "function") {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    }
+    alert("✨ Nouveau mois ! Toutes les cases ont été réinitialisées.");
+  }
+});
+</script>
 
 });
 </script>
 
 </body>
 </html>
+
