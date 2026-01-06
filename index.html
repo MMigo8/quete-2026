@@ -16,21 +16,23 @@ body {
   --accent: #60a5fa;
 }
 
-/* ===== THE OFFICE THEME ===== */
+/* ===== THE OFFICE ===== */
 body.theme-office {
   --bg: #f4f1ec;
   --card: #ffffff;
   --text: #1f2933;
   --accent: #2563eb;
 }
-  /* ===== TOY STORY ===== */
-body.theme-toystory {
-  --bg: url('4e2b60f7-1339-4876-8c31-14fb4208458b.png') no-repeat center center fixed;
-  --card: rgba(255,255,255,0.8);
-  --text: #1f2933;
-  --accent: #3b82f6; /* bleu jouet */
-  background-size: cover;
 
+/* ===== TOY STORY ===== */
+body.theme-toystory {
+  --bg: #6b9ac4;
+  --card: #ffffff;
+  --text: #1f2933;
+  --accent: #fbbf24;
+  background-image: url("https://i.imgur.com/6b6PSkC.png");
+  background-size: cover;
+  background-attachment: fixed;
 }
 
 /* ================= GLOBAL ================= */
@@ -46,7 +48,6 @@ body {
 h1 {
   text-align: center;
   font-size: 2.2rem;
-  margin-bottom: 6px;
 }
 
 #current-month {
@@ -88,14 +89,13 @@ h1 {
   margin-bottom: 24px;
 }
 
-/* ================= DAILY CHALLENGE ================= */
+/* ================= DAILY ================= */
 #daily-challenge-btn {
-  display: inline-block;
   padding: 8px 16px;
   border-radius: 12px;
   border: none;
   background: var(--accent);
-  color: var(--bg);
+  color: black;
   cursor: pointer;
 }
 
@@ -162,8 +162,7 @@ footer {
 <select id="theme-select">
   <option value="default">🌈 Default</option>
   <option value="office">🎬 The Office</option>
-  <option value="toystory">🚀 Toy Story</option>
-
+  <option value="toystory">🧸 Toy Story</option>
 </select>
 
 <div style="text-align:center; margin-bottom:20px;">
@@ -176,56 +175,44 @@ footer {
 </div>
 <p id="progress-text">0% accompli</p>
 
-<!-- ===== SECTIONS ===== -->
+<!-- SECTIONS -->
 <div class="section">
 <h2>🌱 Prendre soin de soi</h2>
 <div class="task"><input type="checkbox" class="task-checkbox"> Dire non à quelque chose qui me pèse</div>
 <div class="task"><input type="checkbox" class="task-checkbox"> Prendre un moment solo</div>
 <div class="task"><input type="checkbox" class="task-checkbox"> Méditer 5 minutes</div>
-<div class="reward">🎁 Bien-être assuré</div>
 </div>
 
 <div class="section">
 <h2>🎬 Films & séries</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode préféré</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Noter une émotion ressentie</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Écrire une mini review</div>
-<div class="reward">🎁 Cœur léger</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Revoir un épisode comfort</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Écrire une émotion</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Mini review</div>
 </div>
 
 <div class="section">
 <h2>✍️ Création</h2>
 <div class="task"><input type="checkbox" class="task-checkbox"> Écrire une idée</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Créer sans finir</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Avancer sur un projet</div>
-<div class="reward">🎁 Dopamine créative</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Créer sans pression</div>
 </div>
 
 <div class="section">
 <h2>🎮 Jeux</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Jouer 30 minutes</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Tester un nouveau défi</div>
-<div class="reward">🎁 Fun garanti</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Jouer 30 min</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Tester un défi</div>
 </div>
 
 <div class="section">
 <h2>🤝 Social</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Envoyer un message sympa</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Partager un moment avec Mael</div>
-<div class="reward">🎁 Sourires partagés</div>
-</div>
-
-<div class="section">
-<h2>✨ Bonus</h2>
-<div class="task"><input type="checkbox" class="task-checkbox"> Moment réconfort</div>
-<div class="task"><input type="checkbox" class="task-checkbox"> Prendre du temps pour soi</div>
-<div class="reward">🎁 Sérénité maximale</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Message sympa</div>
+<div class="task"><input type="checkbox" class="task-checkbox"> Moment avec Mael</div>
 </div>
 
 <div id="section-finished">🎉 Section finie !</div>
 
-<footer>Reviens cocher une case quand tu veux 💛</footer>
+<footer>Reviens quand tu veux 💛</footer>
 
+<!-- AUDIO -->
 <audio id="ding" src="https://www.myinstants.com/media/sounds/ding-sound-effect.mp3"></audio>
 <audio id="section-sound" src="https://www.myinstants.com/media/sounds/wow-anime-meme-55752.mp3"></audio>
 <audio id="toystory-music" src="https://www.myinstants.com/media/sounds/toy-story-theme.mp3" loop></audio>
@@ -233,157 +220,91 @@ footer {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  /* ===== MOIS ===== */
-  const monthDisplay = document.getElementById("current-month");
-  const now = new Date();
-  const monthName = now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
-  monthDisplay.textContent = "🗓️ " + monthName.charAt(0).toUpperCase() + monthName.slice(1);
+/* ===== MOIS ===== */
+const now = new Date();
+document.getElementById("current-month").textContent =
+  "🗓️ " + now.toLocaleDateString("fr-FR", { month:"long", year:"numeric" });
 
-  /* ===== THEME ===== */
-  const themeSelect = document.getElementById("theme-select");
-  const savedTheme = localStorage.getItem("theme") || "default";
-  function applyTheme(theme) {
-  document.body.classList.toggle("theme-office", theme === "office");
-  document.body.classList.toggle("theme-toystory", theme === "toystory");
+/* ===== THEME ===== */
+const themeSelect = document.getElementById("theme-select");
+const toyMusic = document.getElementById("toystory-music");
+const savedTheme = localStorage.getItem("theme") || "default";
 
-  if (theme === "toystory") {
-    toyStoryMusic.currentTime = 0;
-    toyStoryMusic.play();
-  } else {
-    toyStoryMusic.pause();
-  }
+function applyTheme(theme){
+  document.body.classList.toggle("theme-office", theme==="office");
+  document.body.classList.toggle("theme-toystory", theme==="toystory");
+
+  if(theme==="toystory"){ toyMusic.play(); }
+  else { toyMusic.pause(); }
 }
 
+themeSelect.value = savedTheme;
 applyTheme(savedTheme);
 
-  themeSelect.value = savedTheme;
-
-  themeSelect.addEventListener("change", () => {
-  const selectedTheme = themeSelect.value;
-  applyTheme(selectedTheme);
-  localStorage.setItem("theme", selectedTheme);
+themeSelect.addEventListener("change", ()=>{
+  applyTheme(themeSelect.value);
+  localStorage.setItem("theme", themeSelect.value);
 });
-  });
-// ==================== RESET MENSUEL AUTOMATIQUE ====================
-const currentMonth = new Date().getMonth(); // 0 = janvier
-const lastMonth = localStorage.getItem('lastMonth');
 
-// Si le mois a changé
-if (lastMonth === null || parseInt(lastMonth) !== currentMonth) {
-  // Animation douce pour décocher chaque case
-  checkboxes.forEach((cb, index) => {
-    setTimeout(() => {
-      cb.checked = false;
-      cb.parentElement.style.transition = "opacity 0.3s";
-      cb.parentElement.style.opacity = "0.3";
-      setTimeout(() => cb.parentElement.style.opacity = "1", 300);
-    }, index * 50); // effet cascade
-  });
+/* ===== CHECKBOXES ===== */
+const checkboxes = document.querySelectorAll(".task-checkbox");
+const bar = document.getElementById("progress-bar");
+const text = document.getElementById("progress-text");
+const ding = document.getElementById("ding");
+const sectionSound = document.getElementById("section-sound");
+const message = document.getElementById("section-finished");
 
-  // Mettre à jour le mois stocké
-  localStorage.setItem('lastMonth', currentMonth);
-
-  // Reset la barre de progression
-  progressBar.style.width = "0%";
-  progressText.textContent = "0% accompli";
-
-  // Confettis pour nouveau mois
-  confetti({ particleCount: 100, spread: 70, origin: { y: 0.6 } });
-
-  // Message d'alerte
-  alert("✨ Nouveau mois ! Toutes les cases ont été réinitialisées.");
+function update(){
+  const checked = [...checkboxes].filter(c=>c.checked).length;
+  const percent = Math.round(checked/checkboxes.length*100);
+  bar.style.width = percent+"%";
+  text.textContent = percent+"% accompli";
 }
 
-  /* ===== PROGRESSION / CHECKBOXES ===== */
-  const checkboxes = document.querySelectorAll(".task-checkbox");
-  const progressBar = document.getElementById("progress-bar");
-  const progressText = document.getElementById("progress-text");
-  const ding = document.getElementById("ding");
-  const sectionSound = document.getElementById("section-sound");
-  const toyStoryMusic = document.getElementById("toystory-music");
-  const message = document.getElementById("section-finished");
+checkboxes.forEach((cb,i)=>{
+  cb.checked = localStorage.getItem("quest-"+i)==="true";
+  cb.addEventListener("change", ()=>{
+    ding.currentTime=0; ding.play();
+    confetti({particleCount:30,spread:60,origin:{y:0.8}});
+    localStorage.setItem("quest-"+i,cb.checked);
+    update();
 
-  function updateProgress() {
-    const checked = [...checkboxes].filter(c => c.checked).length;
-    const percent = Math.round((checked / checkboxes.length) * 100);
-    progressBar.style.width = percent + "%";
-    progressText.textContent = percent + "% accompli";
-  }
-
-  function save() {
-    checkboxes.forEach((cb, i) => localStorage.setItem("quest-" + i, cb.checked));
-  }
-
-  function load() {
-    checkboxes.forEach((cb, i) => cb.checked = localStorage.getItem("quest-" + i) === "true");
-    updateProgress();
-  }
-
-  checkboxes.forEach(cb => {
-    cb.addEventListener("change", () => {
-      ding.currentTime = 0; ding.play();
-      confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
-      updateProgress(); save();
-
-      const section = cb.closest(".section");
-      const all = section.querySelectorAll(".task-checkbox");
-      if ([...all].every(c => c.checked)) {
-        sectionSound.play();
-        confetti({ particleCount: 400, spread: 180 });
-        message.style.display = "block";
-        setTimeout(() => message.style.display = "none", 2000);
-      }
-    });
-  });
-
-  load();
-
-  /* ===== DAILY CHALLENGE ===== */
-  const challenges = [
-    "Écris une mini scène de ton livre audio",
-    "Regarde un épisode comfort",
-    "Fais un challenge dans Minecraft ou Stardew",
-    "Envoie un message fun à Mael",
-    "Note une émotion ressentie sur ton épisode préféré",
-    "Fais un petit dessin chibi d’un personnage Pixar",
-    "Fais une danse de victoire de 30s 🕺"
-  ];
-
-  const challengeBtn = document.getElementById("daily-challenge-btn");
-  const challengeText = document.getElementById("daily-challenge-text");
-
-  const monthKey = `daily-challenges-${now.getMonth()}-${now.getFullYear()}`;
-  let dailyChallenges = JSON.parse(localStorage.getItem(monthKey));
-  if (!dailyChallenges) {
-    dailyChallenges = [];
-    const copy = [...challenges];
-    for (let i = 0; i < 31; i++) {
-      if (copy.length === 0) copy.push(...challenges);
-      const randIndex = Math.floor(Math.random() * copy.length);
-      dailyChallenges.push(copy.splice(randIndex,1)[0]);
+    const section = cb.closest(".section");
+    if([...section.querySelectorAll(".task-checkbox")].every(c=>c.checked)){
+      sectionSound.play();
+      confetti({particleCount:400,spread:180});
+      message.style.display="block";
+      setTimeout(()=>message.style.display="none",2000);
     }
-    localStorage.setItem(monthKey, JSON.stringify(dailyChallenges));
-  }
-
-  challengeBtn.addEventListener("click", () => {
-    const day = now.getDate() - 1;
-    const challenge = dailyChallenges[day];
-    challengeText.textContent = "🎁 Défi du jour : " + challenge;
-    confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
-    ding.currentTime = 0; ding.play();
   });
+});
+
+update();
+
+/* ===== DAILY ===== */
+const challenges=[
+ "Écris une scène audio",
+ "Regarde un épisode comfort",
+ "Fais une review Letterboxd",
+ "Message fun à Mael",
+ "Dessin chibi Pixar",
+ "Danse victoire 30s"
+];
+
+const key=`challenges-${now.getMonth()}-${now.getFullYear()}`;
+let monthChallenges=JSON.parse(localStorage.getItem(key));
+if(!monthChallenges){
+  monthChallenges=[...Array(31)].map(()=>challenges[Math.floor(Math.random()*challenges.length)]);
+  localStorage.setItem(key,JSON.stringify(monthChallenges));
+}
+
+document.getElementById("daily-challenge-btn").onclick=()=>{
+  document.getElementById("daily-challenge-text").textContent=
+   "🎁 "+monthChallenges[now.getDate()-1];
+};
 
 });
 </script>
 
 </body>
 </html>
-
-
-
-
-
-
-
-
-
