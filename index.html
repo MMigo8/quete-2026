@@ -222,6 +222,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 /* ===== MOIS ===== */
 const now = new Date();
+const monthKey = `quest-${now.getFullYear()}-${now.getMonth()}`;
 document.getElementById("current-month").textContent =
   "🗓️ " + now.toLocaleDateString("fr-FR", { month:"long", year:"numeric" });
 
@@ -308,3 +309,4 @@ document.getElementById("daily-challenge-btn").onclick=()=>{
 
 </body>
 </html>
+
