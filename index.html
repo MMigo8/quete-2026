@@ -14,12 +14,6 @@ body {
   --card: rgba(255,255,255,0.06);
   --text: #f9fafb;
   --accent: #60a5fa;
-  font-family: system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
-  padding: 24px;
-  max-width: 900px;
-  margin: auto;
 }
 
 /* ===== THE OFFICE THEME ===== */
@@ -31,16 +25,28 @@ body.theme-office {
 }
 
 /* ================= GLOBAL ================= */
+body {
+  font-family: system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  padding: 24px;
+  max-width: 900px;
+  margin: auto;
+}
+
 h1 {
   text-align: center;
   font-size: 2.2rem;
   margin-bottom: 6px;
 }
+
 #current-month {
   text-align: center;
   opacity: 0.8;
   margin-bottom: 12px;
 }
+
+/* ================= THEME SELECT ================= */
 #theme-select {
   display: block;
   margin: 0 auto 20px;
@@ -50,6 +56,8 @@ h1 {
   background: var(--card);
   color: var(--text);
 }
+
+/* ================= PROGRESS ================= */
 #progress-container {
   background: rgba(255,255,255,0.15);
   border-radius: 12px;
@@ -57,17 +65,21 @@ h1 {
   margin: 20px 0;
   overflow: hidden;
 }
+
 #progress-bar {
   height: 100%;
   width: 0%;
   background: var(--accent);
   transition: width 0.3s ease;
 }
+
 #progress-text {
   text-align: center;
   font-weight: bold;
   margin-bottom: 24px;
 }
+
+/* ================= DAILY CHALLENGE ================= */
 #daily-challenge-btn {
   display: inline-block;
   padding: 8px 16px;
@@ -77,32 +89,40 @@ h1 {
   color: var(--bg);
   cursor: pointer;
 }
+
 #daily-challenge-text {
   margin-top: 10px;
   font-weight: bold;
   text-align: center;
 }
+
+/* ================= SECTIONS ================= */
 .section {
   background: var(--card);
   border-radius: 16px;
   padding: 16px;
   margin-bottom: 20px;
 }
+
 .task {
   display: flex;
   gap: 10px;
   margin: 8px 0;
 }
+
 .task input {
   width: 20px;
   height: 20px;
   accent-color: var(--accent);
 }
+
 .reward {
   margin-top: 10px;
   opacity: 0.7;
   font-style: italic;
 }
+
+/* ================= SECTION FINIE ================= */
 #section-finished {
   position: fixed;
   top: 50%;
@@ -116,6 +136,7 @@ h1 {
   display: none;
   z-index: 9999;
 }
+
 footer {
   text-align: center;
   opacity: 0.6;
@@ -200,23 +221,24 @@ footer {
 <script>
 document.addEventListener("DOMContentLoaded", () => {
 
-  // ==== MOIS ====
+  /* ===== MOIS ===== */
   const monthDisplay = document.getElementById("current-month");
   const now = new Date();
   const monthName = now.toLocaleDateString("fr-FR", { month: "long", year: "numeric" });
   monthDisplay.textContent = "🗓️ " + monthName.charAt(0).toUpperCase() + monthName.slice(1);
 
-  // ==== THEME ====
+  /* ===== THEME ===== */
   const themeSelect = document.getElementById("theme-select");
   const savedTheme = localStorage.getItem("theme") || "default";
   document.body.classList.toggle("theme-office", savedTheme === "office");
   themeSelect.value = savedTheme;
+
   themeSelect.addEventListener("change", () => {
     document.body.classList.toggle("theme-office", themeSelect.value === "office");
     localStorage.setItem("theme", themeSelect.value);
   });
 
-  // ==== PROGRESSION / CHECKBOXES ====
+  /* ===== PROGRESSION / CHECKBOXES ===== */
   const checkboxes = document.querySelectorAll(".task-checkbox");
   const progressBar = document.getElementById("progress-bar");
   const progressText = document.getElementById("progress-text");
@@ -231,54 +253,35 @@ document.addEventListener("DOMContentLoaded", () => {
     progressText.textContent = percent + "% accompli";
   }
 
-  function saveProgress() {
-    checkboxes.forEach((cb,i) => localStorage.setItem("quest-"+i, cb.checked));
+  function save() {
+    checkboxes.forEach((cb, i) => localStorage.setItem("quest-" + i, cb.checked));
   }
 
-  function loadProgress() {
-    checkboxes.forEach((cb,i) => cb.checked = localStorage.getItem("quest-"+i) === "true");
+  function load() {
+    checkboxes.forEach((cb, i) => cb.checked = localStorage.getItem("quest-" + i) === "true");
     updateProgress();
   }
 
   checkboxes.forEach(cb => {
     cb.addEventListener("change", () => {
-      ding.currentTime=0; ding.play();
-      confetti({ particleCount: 30, spread: 60, origin: { y:0.8 } });
-      updateProgress(); saveProgress();
+      ding.currentTime = 0; ding.play();
+      confetti({ particleCount: 30, spread: 60, origin: { y: 0.8 } });
+      updateProgress(); save();
 
       const section = cb.closest(".section");
       const all = section.querySelectorAll(".task-checkbox");
       if ([...all].every(c => c.checked)) {
-        sectionSound.currentTime=0; sectionSound.play();
+        sectionSound.play();
         confetti({ particleCount: 400, spread: 180 });
-        message.style.display="block";
-        setTimeout(()=> message.style.display="none",2000);
+        message.style.display = "block";
+        setTimeout(() => message.style.display = "none", 2000);
       }
     });
   });
 
-  loadProgress();
+  load();
 
-  // ==== RESET MENSUEL ====
-  const currentMonth = now.getMonth();
-  const lastMonth = localStorage.getItem("lastMonth");
-  if(lastMonth === null || parseInt(lastMonth) !== currentMonth){
-    checkboxes.forEach((cb,index) => {
-      setTimeout(()=>{
-        cb.checked=false;
-        cb.parentElement.style.transition="opacity 0.3s";
-        cb.parentElement.style.opacity="0.3";
-        setTimeout(()=> cb.parentElement.style.opacity="1",300);
-      }, index*50);
-    });
-    localStorage.setItem('lastMonth', currentMonth);
-    progressBar.style.width="0%";
-    progressText.textContent="0% accompli";
-    confetti({ particleCount:100, spread:70, origin:{y:0.6} });
-    alert("✨ Nouveau mois ! Toutes les cases ont été réinitialisées.");
-  }
-
-  // ==== DAILY CHALLENGE ====
+  /* ===== DAILY CHALLENGE ===== */
   const challenges = [
     "Écris une mini scène de ton livre audio",
     "Regarde un épisode comfort",
@@ -288,27 +291,29 @@ document.addEventListener("DOMContentLoaded", () => {
     "Fais un petit dessin chibi d’un personnage Pixar",
     "Fais une danse de victoire de 30s 🕺"
   ];
+
   const challengeBtn = document.getElementById("daily-challenge-btn");
   const challengeText = document.getElementById("daily-challenge-text");
-  const monthKey = `daily-challenges-${currentMonth}-${now.getFullYear()}`;
+
+  const monthKey = `daily-challenges-${now.getMonth()}-${now.getFullYear()}`;
   let dailyChallenges = JSON.parse(localStorage.getItem(monthKey));
-  if(!dailyChallenges){
-    dailyChallenges=[];
-    const copy=[...challenges];
-    for(let i=0;i<31;i++){
-      if(copy.length===0) copy.push(...challenges);
-      const rand=Math.floor(Math.random()*copy.length);
-      dailyChallenges.push(copy.splice(rand,1)[0]);
+  if (!dailyChallenges) {
+    dailyChallenges = [];
+    const copy = [...challenges];
+    for (let i = 0; i < 31; i++) {
+      if (copy.length === 0) copy.push(...challenges);
+      const randIndex = Math.floor(Math.random() * copy.length);
+      dailyChallenges.push(copy.splice(randIndex,1)[0]);
     }
     localStorage.setItem(monthKey, JSON.stringify(dailyChallenges));
   }
 
-  challengeBtn.addEventListener("click",()=>{
-    const day=now.getDate()-1;
-    const challenge=dailyChallenges[day];
-    challengeText.textContent="🎁 Défi du jour : "+challenge;
-    confetti({ particleCount:50, spread:70, origin:{y:0.6} });
-    ding.currentTime=0; ding.play();
+  challengeBtn.addEventListener("click", () => {
+    const day = now.getDate() - 1;
+    const challenge = dailyChallenges[day];
+    challengeText.textContent = "🎁 Défi du jour : " + challenge;
+    confetti({ particleCount: 50, spread: 70, origin: { y: 0.6 } });
+    ding.currentTime = 0; ding.play();
   });
 
 });
