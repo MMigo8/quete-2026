@@ -242,7 +242,20 @@ document.addEventListener("DOMContentLoaded", () => {
   /* ===== THEME ===== */
   const themeSelect = document.getElementById("theme-select");
   const savedTheme = localStorage.getItem("theme") || "default";
-  document.body.classList.toggle("theme-office", savedTheme === "office");
+  function applyTheme(theme) {
+  document.body.classList.toggle("theme-office", theme === "office");
+  document.body.classList.toggle("theme-toystory", theme === "toystory");
+
+  if (theme === "toystory") {
+    toyStoryMusic.currentTime = 0;
+    toyStoryMusic.play();
+  } else {
+    toyStoryMusic.pause();
+  }
+}
+
+applyTheme(savedTheme);
+
   themeSelect.value = savedTheme;
 
   themeSelect.addEventListener("change", () => {
@@ -363,6 +376,7 @@ if (lastMonth === null || parseInt(lastMonth) !== currentMonth) {
 
 </body>
 </html>
+
 
 
 
