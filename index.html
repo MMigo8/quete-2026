@@ -259,8 +259,10 @@ applyTheme(savedTheme);
   themeSelect.value = savedTheme;
 
   themeSelect.addEventListener("change", () => {
-    document.body.classList.toggle("theme-office", themeSelect.value === "office");
-    localStorage.setItem("theme", themeSelect.value);
+  const selectedTheme = themeSelect.value;
+  applyTheme(selectedTheme);
+  localStorage.setItem("theme", selectedTheme);
+});
   });
 // ==================== RESET MENSUEL AUTOMATIQUE ====================
 const currentMonth = new Date().getMonth(); // 0 = janvier
@@ -376,6 +378,7 @@ if (lastMonth === null || parseInt(lastMonth) !== currentMonth) {
 
 </body>
 </html>
+
 
 
 
